@@ -90,7 +90,7 @@ export default function Portfolio({ onReplay }: Props) {
                 <div className="w-40 h-40 rounded-full overflow-hidden flex-shrink-0
                         shadow-[0_0_0_3px_#fff,0_0_0_5px_rgba(212,168,67,0.35),0_16px_40px_rgba(0,0,0,0.12)]
                         max-sm:mx-auto">
-                    <img src="/photo.png" alt="Plato Knyazev" className="w-full h-full object-cover object-top" />
+                    <img src="/guy.webp" alt="Plato Knyazev" className="w-full h-full object-cover object-top" />
                 </div>
 
                 {/* Text */}
