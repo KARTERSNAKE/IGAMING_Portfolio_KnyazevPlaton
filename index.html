@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plato Knyazev — Creative Technologist</title>
+  <meta name="description"
+    content="Portfolio of Plato Knyazev — Creative Technologist specialising in AI-assisted development, automation pipelines, and creative content systems." />
+
+  <!-- Google Fonts: Premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            gold: {
+              50: '#fffdf0',
+              100: '#fef9d3',
+              200: '#fdeea7',
+              300: '#fbe06b',
+              400: '#f8cc3c',
+              500: '#f5b800',
+              600: '#d49700',
+              700: '#a87400',
+              800: '#7c5500',
+              900: '#533800',
+            },
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% center' },
+              '100%': { backgroundPosition: '200% center' },
+            },
+            pulse_ring: {
+              '0%, 100%': { transform: 'scale(1)', opacity: '0.4' },
+              '50%': { transform: 'scale(1.05)', opacity: '0.2' },
+            },
+            chevron_bounce: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(3px)' },
+            },
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.6s ease both',
+            'shimmer': 'shimmer 3s linear infinite',
+            'pulse-ring': 'pulse_ring 2s ease-in-out infinite',
+            'chevron-bounce': 'chevron_bounce 1.5s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* =============================================
+       BASE / RESET
+    ============================================= */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #111111;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       INTRO OVERLAY
+    ============================================= */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      transition: opacity 0.6s ease;
+    }
+
+    #intro-overlay.fading {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro-overlay.hidden {
+      display: none;
+    }
+
+    /* Lottie slot machine container */
+    #lottie-container {
+      width: 280px;
+      height: 280px;
+      position: relative;
+      /* Elegant bottom shadow — feels like the machine is sitting on a surface */
+      filter: drop-shadow(0 32px 48px rgba(0, 0, 0, 0.12)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+    }
+
+    /* Intro label under animation */
+    #intro-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #888;
+      letter-spacing: 0.06em;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    #intro-label.visible {
+      opacity: 1;
+    }
+
+    /* Skip button */
+    #skip-btn {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      cursor: pointer;
+      background: transparent;
+      border: 1.5px solid #d4a843;
+      color: #8a6a1f;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 12px 36px;
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #skip-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(212, 168, 67, 0.15) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2s linear infinite;
+    }
+
+    #skip-btn:hover {
+      background: rgba(212, 168, 67, 0.08);
+      transform: scale(1.03);
+    }
+
+    #skip-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* =============================================
+       REPLAY SLOT ICON (top-left)
+    ============================================= */
+    #replay-btn {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    #replay-btn:hover {
+      transform: scale(1.1) rotate(-8deg);
+      box-shadow: 0 6px 24px rgba(212, 168, 67, 0.25);
+      border-color: rgba(212, 168, 67, 0.6);
+    }
+
+    #replay-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* =============================================
+       MAIN PORTFOLIO
+    ============================================= */
+    #main-portfolio {
+      min-height: 100vh;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    .hero-block {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      align-items: start;
+      padding: 40px 0 48px;
+      border-bottom: 1px solid #f0f0f0;
+      animation: fadeInUp 0.7s ease both;
+    }
+
+    @media (max-width: 600px) {
+      .hero-block {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .photo-wrapper {
+        margin: 0 auto;
+      }
+    }
+
+    /* Photo */
+    .photo-wrapper {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      background: #f5f5f5;
+      /* Premium double ring */
+      box-shadow:
+        0 0 0 3px #fff,
+        0 0 0 5px rgba(212, 168, 67, 0.35),
+        0 16px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* Name & title */
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: #0a0a0a;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title {
+      display: inline-block;
+      margin-top: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #c99a35;
+      background: linear-gradient(135deg, #d4a843, #c99a35, #e8c060, #c99a35);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .hero-about {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #444;
+      max-width: 520px;
+    }
+
+    .hero-about strong {
+      color: #111;
+      font-weight: 600;
+    }
+
+    /* Language / meta tags */
+    .hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid #e8e8e8;
+      color: #555;
+      background: #fafafa;
+      text-transform: uppercase;
+    }
+
+    .tag.gold {
+      border-color: rgba(212, 168, 67, 0.4);
+      color: #a07825;
+      background: rgba(212, 168, 67, 0.06);
+    }
+
+    /* =============================================
+       CONTACT ROW
+    ============================================= */
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #c99a35;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(212, 168, 67, 0.4);
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .contact-link:hover {
+      color: #a07825;
+      border-color: #a07825;
+    }
+
+    /* =============================================
+       ACCORDION SECTION
+    ============================================= */
+    .accordion-wrapper {
+      margin-top: 12px;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid #f0f0f0;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    /* Staggered animation */
+    .accordion-item:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .accordion-item:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .accordion-item:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 0;
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+      transition: opacity 0.2s;
+    }
+
+    .accordion-header:hover {
+      opacity: 0.75;
+    }
+
+    .accordion-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .accordion-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.3rem;
+      border: 1px solid #f0f0f0;
+      background: #fafafa;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-item.open .accordion-icon {
+      background: rgba(212, 168, 67, 0.08);
+      border-color: rgba(212, 168, 67, 0.3);
+      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.12);
+    }
+
+    .accordion-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #111;
+      letter-spacing: -0.01em;
+    }
+
+    .accordion-subtitle {
+      font-size: 0.75rem;
+      color: #999;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* Chevron */
+    .accordion-chevron {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      color: #bbb;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s;
+    }
+
+    .accordion-item.open .accordion-chevron {
+      transform: rotate(180deg);
+      color: #c99a35;
+    }
+
+    /* Content panel — animate via grid rows trick */
+    .accordion-body-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .accordion-item.open .accordion-body-wrapper {
+      grid-template-rows: 1fr;
+    }
+
+    .accordion-body-inner {
+      overflow: hidden;
+    }
+
+    .accordion-body {
+      padding: 0 0 32px;
+    }
+
+    /* Content inside accordion */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .content-card {
+      background: #fafafa;
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .content-card:hover {
+      border-color: rgba(212, 168, 67, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .content-card-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #c99a35;
+      margin-bottom: 8px;
+    }
+
+    .content-card-text {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #555;
+    }
+
+    /* Skill pills */
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .skill-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: #f5f5f5;
+      color: #444;
+      border: 1px solid #ebebeb;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .skill-pill:hover {
+      background: rgba(212, 168, 67, 0.1);
+      border-color: rgba(212, 168, 67, 0.4);
+      color: #a07825;
+    }
+
+    /* Featured project card (OpenClaw) */
+    .project-card {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      border: 1px solid rgba(212, 168, 67, 0.2);
+      border-radius: 16px;
+      padding: 28px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(212, 168, 67, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .project-card-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(212, 168, 67, 0.15);
+      color: #d4a843;
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      margin-bottom: 14px;
+    }
+
+    .project-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .project-card-text {
+      font-size: 0.87rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .feature-list {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.5;
+    }
+
+    .feature-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d4a843;
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    /* Tech stack tag */
+    .tech-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 4px 4px 0 0;
+    }
+
+    /* =============================================
+       SECTION DIVIDER / LABEL
+    ============================================= */
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #ccc;
+      padding: 32px 0 8px;
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid #f0f0f0;
+      text-align: center;
+      font-size: 0.78rem;
+      color: #bbb;
+      letter-spacing: 0.05em;
+    }
+
+    .footer span {
+      color: #d4a843;
+    }
+
+    /* =============================================
+       UTILITY ANIMATIONS
+    ============================================= */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #fff;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #eee;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       PHASE 1 — INTRO OVERLAY (Slot Machine Sequence)
+  ============================================================ -->
+  <div id="intro-overlay" role="dialog" aria-label="Intro animation">
+    <!-- Lottie slot machine animation (lottie-web via CDN) -->
+    <div id="lottie-container" class="w-64 h-64 mx-auto" aria-hidden="true"></div>
+
+    <!-- Italic label that fades in -->
+    <p id="intro-label">Loading portfolio…</p>
+
+    <!-- Skip button: appears after 5s (or immediately on replay) -->
+    <button id="skip-btn" aria-label="Skip intro animation">Skip →</button>
+  </div>
+
+  <!-- ============================================================
+       REPLAY TRIGGER — small slot icon (top-left corner)
+  ============================================================ -->
+  <button id="replay-btn" title="Replay intro" aria-label="Replay slot machine intro">
+    <!-- Slot machine SVG icon -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+      stroke-linejoin="round" style="color:#c99a35;">
+      <rect x="2" y="3" width="20" height="18" rx="3" />
+      <line x1="8" y1="3" x2="8" y2="21" />
+      <line x1="16" y1="3" x2="16" y2="21" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <circle cx="5" cy="7.5" r="1.2" fill="#c99a35" stroke="none" />
+      <circle cx="12" cy="7.5" r="1.2" fill="#c99a35" stroke="none" />
+      <circle cx="19" cy="7.5" r="1.2" fill="#c99a35" stroke="none" />
+      <circle cx="5" cy="16.5" r="1.2" fill="#c99a35" stroke="none" />
+      <circle cx="12" cy="16.5" r="1.2" fill="#c99a35" stroke="none" />
+      <circle cx="19" cy="16.5" r="1.2" fill="#c99a35" stroke="none" />
+    </svg>
+  </button>
+
+  <!-- ============================================================
+       PHASE 2 — MAIN PORTFOLIO
+  ============================================================ -->
+  <main id="main-portfolio" aria-label="Portfolio">
+
+    <!-- ── HERO BLOCK ────────────────────────────── -->
+    <section class="hero-block" aria-label="About Plato Knyazev">
+      <!-- Photo -->
+      <div class="photo-wrapper">
+        <img src="photo.png" alt="Photo of Plato Knyazev" loading="eager" />
+      </div>
+
+      <!-- Text -->
+      <div>
+        <h1 class="hero-name">Plato Knyazev</h1>
+        <span class="hero-title">Creative Technologist</span>
+
+        <p class="hero-about">
+          I work at the intersection of <strong>AI-assisted development</strong> and creative engineering.
+          Operating in next-generation multi-agent IDEs like <strong>Google Antigravity</strong>,
+          I delegate routine code to agents while maintaining architectural oversight —
+          validating every output for security vulnerabilities before it ships to production.
+          <br /><br />
+          My core principle: <strong>a well-structured prompt</strong> (backed by a MindMap)
+          can improve AI output quality by 20–40% and save a product. I build automation systems
+          for personal and business use, and I take cybersecurity seriously —
+          <em>"measure seven times, cut once."</em>
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag gold">ENG / RUS</span>
+          <span class="tag">AI Dev</span>
+          <span class="tag">Automation</span>
+          <span class="tag">Creative Tech</span>
+          <span class="tag">Content</span>
+        </div>
+
+        <div style="margin-top:20px;">
+          <a href="https://platonknyazev.taplink.bio/" target="_blank" rel="noopener" class="contact-link"
+            id="contact-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+            platonknyazev.taplink.bio
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACCORDION LABEL ───────────────────────── -->
+    <p class="section-label">Projects &amp; Skills</p>
+
+    <!-- ── ACCORDION MENU ────────────────────────── -->
+    <div class="accordion-wrapper" role="list">
+
+      <!-- ─── ACCORDION 1: AI & Data Engineering ─── -->
+      <article class="accordion-item" id="acc-1" role="listitem">
+        <div class="accordion-header" id="acc-1-header" role="button" aria-expanded="false" aria-controls="acc-1-body"
+          tabindex="0">
+          <div class="accordion-header-left">
+            <div class="accordion-icon" aria-hidden="true">🧠</div>
+            <div>
+              <div class="accordion-title">AI &amp; Data Engineering</div>
+              <div class="accordion-subtitle">Prompt architecture · LLMs · Agent workflows</div>
+            </div>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+
+        <div class="accordion-body-wrapper" id="acc-1-body" role="region" aria-labelledby="acc-1-header">
+          <div class="accordion-body-inner">
+            <div class="accordion-body">
+              <div class="content-grid">
+                <!-- Card 1 -->
+                <div class="content-card">
+                  <div class="content-card-title">Prompt Engineering</div>
+                  <div class="content-card-text">
+                    I craft clear, structured prompts with architectural context before any
+                    agent interaction. Asking the model to <em>justify</em> its reasoning
+                    reduces hallucinations and improves code quality by <strong>20–40%</strong>.
+                    Every prompt is grounded in a pre-built MindMap of the system.
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="content-card">
+                  <div class="content-card-title">Multi-Agent IDE</div>
+                  <div class="content-card-text">
+                    I operate inside next-generation multi-agent development environments
+                    (Google Antigravity), delegating routine code generation to agents
+                    while performing architectural oversight and detailed code analysis
+                    before pushing to production.
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="content-card">
+                  <div class="content-card-title">Security-First Development</div>
+                  <div class="content-card-text">
+                    Every piece of AI-generated code is reviewed for security vulnerabilities.
+                    I build sites that don't break after a week — robust, production-ready,
+                    following the principle: <em>measure seven times, cut once.</em>
+                  </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="content-card">
+                  <div class="content-card-title">Workflow &amp; Automation</div>
+                  <div class="content-card-text">
+                    I design automation systems for routine tasks — both personal and
+                    business-facing. Architectural thinking + agent understanding =
+                    production systems that scale.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Skill pills -->
+              <div class="skill-pills">
+                <span class="skill-pill">Python 3.10+</span>
+                <span class="skill-pill">OpenAI API</span>
+                <span class="skill-pill">LLM Agents</span>
+                <span class="skill-pill">Prompt Design</span>
+                <span class="skill-pill">MindMapping</span>
+                <span class="skill-pill">Aiohttp / Async</span>
+                <span class="skill-pill">Cybersecurity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ─── ACCORDION 2: Creative Tech & Content ─── -->
+      <article class="accordion-item" id="acc-2" role="listitem">
+        <div class="accordion-header" id="acc-2-header" role="button" aria-expanded="false" aria-controls="acc-2-body"
+          tabindex="0">
+          <div class="accordion-header-left">
+            <div class="accordion-icon" aria-hidden="true">🎨</div>
+            <div>
+              <div class="accordion-title">Creative Tech &amp; Content</div>
+              <div class="accordion-subtitle">Lottie · After Effects · Adobe Suite · JSON animation</div>
+            </div>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+
+        <div class="accordion-body-wrapper" id="acc-2-body" role="region" aria-labelledby="acc-2-header">
+          <div class="accordion-body-inner">
+            <div class="accordion-body">
+              <div class="content-grid">
+                <!-- Card 1 -->
+                <div class="content-card">
+                  <div class="content-card-title">Adobe After Effects → Lottie</div>
+                  <div class="content-card-text">
+                    I animate in After Effects using acceleration plugins, then export to
+                    JSON via <strong>Bodymovin</strong> for web embedding. Dynamic,
+                    lightweight animations that feel premium without bloating load times.
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="content-card">
+                  <div class="content-card-title">Brand Design</div>
+                  <div class="content-card-text">
+                    In Illustrator I design sites, apps, logos, brandbooks, and
+                    logo books using the <strong>golden ratio</strong>. Visuals constructed
+                    on mathematical principles — precision is recognition.
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="content-card">
+                  <div class="content-card-title">Video &amp; Content Production</div>
+                  <div class="content-card-text">
+                    Premiere Pro for vertical and horizontal video editing. Fast, dynamic,
+                    memorable content — engineered for social-media virality and brand
+                    memorability in 2026's attention economy.
+                  </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="content-card">
+                  <div class="content-card-title">Photoshop &amp; Raster</div>
+                  <div class="content-card-text">
+                    Retouching, object removal, image quality enhancement —
+                    complete raster workflow to complement vector and motion work.
+                  </div>
+                </div>
+              </div>
+
+              <div class="skill-pills">
+                <span class="skill-pill">Adobe AE</span>
+                <span class="skill-pill">Illustrator</span>
+                <span class="skill-pill">Premiere Pro</span>
+                <span class="skill-pill">Photoshop</span>
+                <span class="skill-pill">Lottie / Bodymovin</span>
+                <span class="skill-pill">JSON Animation</span>
+                <span class="skill-pill">Golden Ratio</span>
+                <span class="skill-pill">Social Content</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ─── ACCORDION 3: OpenClaw Pipeline ─── -->
+      <article class="accordion-item" id="acc-3" role="listitem">
+        <div class="accordion-header" id="acc-3-header" role="button" aria-expanded="false" aria-controls="acc-3-body"
+          tabindex="0">
+          <div class="accordion-header-left">
+            <div class="accordion-icon" aria-hidden="true">⚙️</div>
+            <div>
+              <div class="accordion-title">OpenClaw Content Pipeline</div>
+              <div class="accordion-subtitle">Microservices · AI Judge · Zero-Downtime · Self-Healing</div>
+            </div>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+
+        <div class="accordion-body-wrapper" id="acc-3-body" role="region" aria-labelledby="acc-3-header">
+          <div class="accordion-body-inner">
+            <div class="accordion-body">
+
+              <!-- Featured dark project card -->
+              <div class="project-card">
+                <div class="project-card-badge">🚀 Flagship Project</div>
+                <div class="project-card-title">OpenClaw — Automated Content Conveyor</div>
+                <p class="project-card-text">
+                  A fully autonomous Montage + Publishing pipeline built as a microservice
+                  ecosystem, controllable by external LLM agents via a clean API "skill" interface.
+                  Designed for zero-downtime, self-healing operation.
+                </p>
+
+                <div class="feature-list">
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span><strong style="color:#e8c060;">Microservices (MCP):</strong>
+                      Designed a full API architecture. The system integrates as a ready-made
+                      "skill" for control via external LLM agents.</span>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span><strong style="color:#e8c060;">100% Automation (AI Judge):</strong>
+                      Integrated OpenAI Vision for autonomous asset moderation — completely
+                      eliminating manual review labour.</span>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span><strong style="color:#e8c060;">Algorithmic SEO:</strong>
+                      Configured LLM-generated unique metadata for safe YouTube scaling
+                      and spam-filter evasion.</span>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-dot"></div>
+                    <span><strong style="color:#e8c060;">Zero-Downtime (Self-Healing):</strong>
+                      Developed an AI log processor that autonomously resolves failures —
+                      clears memory, restarts renders — without human intervention.</span>
+                  </div>
+                </div>
+
+                <!-- Tech stack -->
+                <div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.08); padding-top:16px;">
+                  <div style="font-size:0.68rem; font-weight:700; letter-spacing:0.15em;
+                              text-transform:uppercase; color:rgba(255,255,255,0.3);
+                              margin-bottom:10px;">Stack</div>
+                  <span class="tech-tag">Python 3.10+</span>
+                  <span class="tech-tag">Aiogram</span>
+                  <span class="tech-tag">Deemix (pip)</span>
+                  <span class="tech-tag">Aiohttp</span>
+                  <span class="tech-tag">Playwright</span>
+                  <span class="tech-tag">OpenAI Vision</span>
+                  <span class="tech-tag">YouTube API</span>
+                  <span class="tech-tag">Subprocess Async</span>
+                  <span class="tech-tag">Self-Healing Logs</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /accordion-wrapper -->
+
+    <!-- ── FOOTER ─────────────────────────────────── -->
+    <footer class="footer">
+      <p>© 2026 <span>Plato Knyazev</span> — Creative Technologist</p>
+      <p style="margin-top:6px;">
+        Languages: ENG · RUS &nbsp;|&nbsp;
+        <a href="https://platonknyazev.taplink.bio/" target="_blank" rel="noopener" class="contact-link"
+          style="font-size:0.76rem;">
+          platonknyazev.taplink.bio
+        </a>
+      </p>
+    </footer>
+
+  </main><!-- /main-portfolio -->
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <!-- lottie-web via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+
+  <script>
+    /* ============================================================
+       MODULE: Intro Sequence
+       Handles first-visit / returning visitor logic,
+       Lottie playback, skip button timing, and replay.
+    ============================================================ */
+    (function IntroModule() {
+
+      const STORAGE_KEY = 'plato_visited';
+      const SKIP_DELAY_MS = 5000; // 5 seconds until skip appears
+
+      const overlay = document.getElementById('intro-overlay');
+      const skipBtn = document.getElementById('skip-btn');
+      const lottieEl = document.getElementById('lottie-container');
+      const introLabel = document.getElementById('intro-label');
+      const replayBtn = document.getElementById('replay-btn');
+
+      let lottieAnim = null;
+      let skipTimer = null;
+
+      /* ── Init Lottie ─────────────────────────── */
+      function loadLottie() {
+        if (lottieAnim) {
+          lottieAnim.destroy();
+          lottieAnim = null;
+        }
+
+        lottieAnim = lottie.loadAnimation({
+          container: lottieEl,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: 'slot-machine.json',  // local Lottie file
+        });
+
+      }
+
+      /* ── Show skip button ────────────────────── */
+      function showSkip() {
+        skipBtn.classList.add('visible');
+      }
+
+      /* ── Dismiss the overlay ─────────────────── */
+      function dismiss() {
+        clearTimeout(skipTimer);
+        overlay.classList.add('fading');
+
+        /* After transition ends, fully hide */
+        overlay.addEventListener('transitionend', function handler() {
+          overlay.removeEventListener('transitionend', handler);
+          overlay.classList.add('hidden');
+          if (lottieAnim) {
+            lottieAnim.stop();
+          }
+        });
+
+        /* Mark as visited */
+        try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* private mode */ }
+      }
+
+      /* ── Replay intro (from main page) ──────── */
+      function replayIntro() {
+        /* Reset overlay state */
+        overlay.classList.remove('hidden', 'fading');
+        overlay.style.opacity = '';
+
+        /* Show skip immediately in replay mode */
+        skipBtn.classList.add('visible');
+        introLabel.classList.add('visible');
+
+        /* Re-init Lottie */
+        loadLottie();
+      }
+
+      /* ── Entry point ─────────────────────────── */
+      function init() {
+        let isReturning = false;
+        try { isReturning = !!localStorage.getItem(STORAGE_KEY); } catch (e) { }
+
+        if (isReturning) {
+          /* Returning visitor: hide intro immediately */
+          overlay.classList.add('hidden');
+        } else {
+          /* First-time visitor: show intro */
+          loadLottie();
+
+          /* Fade in label after a short moment */
+          setTimeout(() => introLabel.classList.add('visible'), 800);
+
+          /* Show skip after 5 seconds */
+          skipTimer = setTimeout(showSkip, SKIP_DELAY_MS);
+        }
+      }
+
+      /* ── Event listeners ─────────────────────── */
+      skipBtn.addEventListener('click', dismiss);
+
+      /* Keyboard: Enter / Space on skip button */
+      skipBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dismiss(); }
+      });
+
+      replayBtn.addEventListener('click', replayIntro);
+
+      /* Allow clicking overlay background to skip (after skip btn appears) */
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay && skipBtn.classList.contains('visible')) {
+          dismiss();
+        }
+      });
+
+      /* ── Boot ─────────────────────────────────── */
+      init();
+
+    })(); // end IntroModule
+
+
+    /* ============================================================
+       MODULE: Accordion
+       Handles expand/collapse for all accordion items.
+       Uses grid-template-rows trick for buttery smooth animation.
+    ============================================================ */
+    (function AccordionModule() {
+
+      const items = document.querySelectorAll('.accordion-item');
+
+      items.forEach(function (item) {
+        const header = item.querySelector('.accordion-header');
+        const body = item.querySelector('.accordion-body-wrapper');
+
+        function toggle() {
+          const isOpen = item.classList.contains('open');
+
+          // Optional: close others (uncomment for single-open mode)
+          // items.forEach(i => {
+          //   i.classList.remove('open');
+          //   i.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+          // });
+
+          if (isOpen) {
+            item.classList.remove('open');
+            header.setAttribute('aria-expanded', 'false');
+          } else {
+            item.classList.add('open');
+            header.setAttribute('aria-expanded', 'true');
+          }
+        }
+
+        /* Click to toggle */
+        header.addEventListener('click', toggle);
+
+        /* Keyboard: Enter / Space */
+        header.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggle();
+          }
+        });
+      });
+
+    })(); // end AccordionModule
+
+  </script>
+</body>
+
+</html>
