@@ -5,7 +5,6 @@
  */
 
 import { motion } from 'framer-motion';
-import Accordion from './Accordion';
 
 // ── Reusable sub-components ─────────────────────────────
 
@@ -31,15 +30,6 @@ function SkillPill({ children }: { children: React.ReactNode }) {
     );
 }
 
-function TechTag({ children }: { children: React.ReactNode }) {
-    return (
-        <span className="inline-block text-[0.68rem] font-semibold tracking-[0.1em] uppercase
-                     px-[10px] py-[3px] rounded-[6px] bg-white/8 text-white/55
-                     border border-white/10 mr-1 mt-1">
-            {children}
-        </span>
-    );
-}
 
 // ── Props ───────────────────────────────────────────────
 interface Props {
@@ -102,27 +92,18 @@ export default function Portfolio({ onReplay }: Props) {
 
                     <span className="shimmer-text inline-block mt-2 text-[0.75rem] font-semibold
                            tracking-[0.22em] uppercase">
-                        Creative Technologist
+                        Creative Technologist / Technical Animator
                     </span>
 
                     <p className="mt-5 text-[0.95rem] leading-[1.75] text-[#444] max-w-[520px]">
-                        I work at the intersection of{' '}
-                        <strong className="text-[#111] font-semibold">AI-assisted development</strong>{' '}
-                        and creative engineering. Operating in next-generation multi-agent IDEs like{' '}
-                        <strong className="text-[#111] font-semibold">Google Antigravity</strong>, I delegate
-                        routine code to agents while maintaining architectural oversight — validating every
-                        output for security vulnerabilities before it ships to production.
+                        I bridge the gap between static design and fully functional web experiences. I specialize in crafting premium 2D assets for the GameDev and iGaming industries, bringing them to life with high-performance UI animation, and building interactive web prototypes to prove they work perfectly in the browser.
                         <br /><br />
-                        My core principle:{' '}
-                        <strong className="text-[#111] font-semibold">a well-structured prompt</strong>{' '}
-                        (backed by a MindMap) can improve AI output quality by 20–40% and save a product.
-                        I build automation systems for personal and business use — and I take cybersecurity
-                        seriously: <em>"measure seven times, cut once."</em>
+                        My core principle: A well-structured asset architecture (Vector to JSON) can improve web performance by 100% and save development time. I build production-ready motion assets that guarantee zero CPU bottlenecking and flawless 60 FPS across mobile browsers.
                     </p>
 
                     {/* Tag chips */}
                     <div className="flex flex-wrap gap-2 mt-5">
-                        {['ENG / RUS', 'AI Dev', 'Automation', 'Creative Tech', 'Content'].map((tag) => (
+                        {['ENG / RUS', 'UI MOTION', 'TECHNICAL ANIMATION', 'LOTTIE / JSON', 'IGAMING ASSETS'].map((tag) => (
                             <span key={tag}
                                 className={[
                                     'text-[0.72rem] font-medium tracking-[0.1em] uppercase px-3.5 py-[5px]',
@@ -164,113 +145,46 @@ export default function Portfolio({ onReplay }: Props) {
                 Projects &amp; Skills
             </motion.p>
 
-            {/* ══ ACCORDION 1: AI & Data Engineering ═══════ */}
-            <Accordion icon="🧠" title="AI & Data Engineering"
-                subtitle="Prompt architecture · LLMs · Agent workflows" delay={0.1}>
-                <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
-                    <ContentCard title="Prompt Engineering">
-                        I craft clear, structured prompts backed by architectural MindMaps before any agent
-                        interaction. Asking models to <em>justify</em> their reasoning reduces hallucinations
-                        and improves code quality by <strong>20–40%</strong>.
-                    </ContentCard>
-                    <ContentCard title="Multi-Agent IDE">
-                        I operate inside next-generation multi-agent environments (Google Antigravity),
-                        delegating routine code generation to agents while performing detailed architectural
-                        review before pushing to production.
-                    </ContentCard>
-                    <ContentCard title="Security-First Dev">
-                        Every piece of AI-generated code is reviewed for security vulnerabilities. I build
-                        sites that survive production — robust and cybersecure.
-                        <em> "Measure seven times, cut once."</em>
-                    </ContentCard>
-                    <ContentCard title="Workflow & Automation">
-                        I design autonomous systems for routine tasks — personal and business-facing.
-                        Architectural thinking + agent expertise = production systems that scale.
-                    </ContentCard>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-4">
-                    {['Python 3.10+', 'OpenAI API', 'LLM Agents', 'Prompt Design', 'MindMapping', 'Aiohttp / Async', 'Cybersecurity'].map(s => <SkillPill key={s}>{s}</SkillPill>)}
-                </div>
-            </Accordion>
-
-            {/* ══ ACCORDION 2: Creative Tech & Content ═════ */}
-            <Accordion icon="🎨" title="Creative Tech & Content"
-                subtitle="Lottie · After Effects · Adobe Suite · JSON animation" delay={0.2}>
-                <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
-                    <ContentCard title="After Effects → Lottie">
-                        I animate in AE using acceleration plugins, then export to JSON via{' '}
-                        <strong>Bodymovin</strong>. Lightweight, premium animations embedded directly
-                        into the web — zero bloat.
-                    </ContentCard>
-                    <ContentCard title="Brand Design">
-                        In Illustrator: sites, apps, logos, brandbooks — constructed on the{' '}
-                        <strong>golden ratio</strong>. Mathematical precision = visual recognition.
-                    </ContentCard>
-                    <ContentCard title="Video Production">
-                        Premiere Pro for vertical &amp; horizontal content. Fast, dynamic,
-                        memorable — engineered for social-media virality in 2026's attention economy.
-                    </ContentCard>
-                    <ContentCard title="Photoshop & Raster">
-                        Retouching, object removal, image quality enhancement — full raster workflow
-                        to complement vector and motion deliverables.
-                    </ContentCard>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-4">
-                    {['Adobe AE', 'Illustrator', 'Premiere Pro', 'Photoshop', 'Lottie / Bodymovin', 'JSON Animation', 'Golden Ratio', 'Social Content'].map(s => <SkillPill key={s}>{s}</SkillPill>)}
-                </div>
-            </Accordion>
-
-            {/* ══ ACCORDION 3: OpenClaw Pipeline ═══════════ */}
-            <Accordion icon="⚙️" title="OpenClaw Content Pipeline"
-                subtitle="Microservices · AI Judge · Zero-Downtime · Self-Healing" delay={0.3}>
-                {/* Dark flagship card */}
-                <div className="relative rounded-2xl overflow-hidden p-7"
-                    style={{
-                        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
-                        border: '1px solid rgba(212,168,67,0.2)'
-                    }}>
-                    {/* Ambient orb */}
-                    <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full pointer-events-none"
-                        style={{ background: 'radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%)' }} />
-
-                    <span className="inline-block text-[0.65rem] font-bold tracking-[0.2em] uppercase
-                           px-3 py-1 rounded-full border border-[#d4a843]/30
-                           bg-[#d4a843]/15 text-[#d4a843] mb-3.5">
-                        🚀 Flagship Project
-                    </span>
-
-                    <h2 className="font-['Playfair_Display',serif] text-[1.35rem] font-bold text-white
-                         mb-3.5 tracking-[-0.01em]">
-                        OpenClaw — Automated Content Conveyor
-                    </h2>
-
-                    <p className="text-[0.87rem] leading-[1.7] text-white/65 mb-4">
-                        A fully autonomous Montage + Publishing pipeline built as a microservice ecosystem,
-                        controllable by external LLM agents via a clean API "skill" interface.
-                        Designed for zero-downtime, self-healing operation.
-                    </p>
-
-                    {[
-                        ['Microservices (MCP)', 'Designed a full API architecture. Integrates as a ready-made "skill" for control via external LLM agents.'],
-                        ['100% Automation (AI Judge)', 'Integrated OpenAI Vision for autonomous asset moderation — completely eliminating manual review labour.'],
-                        ['Algorithmic SEO', 'LLM-generated unique metadata for safe YouTube scaling and spam-filter evasion.'],
-                        ['Zero-Downtime (Self-Healing)', 'AI log processor that autonomously resolves failures — clears memory, restarts renders — without human intervention.'],
-                    ].map(([label, desc]) => (
-                        <div key={label} className="flex items-start gap-2.5 mb-2.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#d4a843] flex-shrink-0 mt-[7px]" />
-                            <p className="text-[0.85rem] leading-[1.5] text-white/75">
-                                <strong className="text-[#e8c060]">{label}:</strong> {desc}
-                            </p>
-                        </div>
-                    ))}
-
-                    {/* Stack tags */}
-                    <div className="mt-5 pt-4 border-t border-white/08">
-                        <p className="text-[0.68rem] font-bold tracking-[0.15em] uppercase text-white/30 mb-2.5">Stack</p>
-                        {['Python 3.10+', 'Aiogram', 'Deemix (pip)', 'Aiohttp', 'Playwright', 'OpenAI Vision', 'YouTube API', 'Subprocess Async', 'Self-Healing Logs'].map(t => <TechTag key={t}>{t}</TechTag>)}
+            {/* ══ Technical Animation Pipeline ══════════════ */}
+            <motion.article
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+                className="border-b border-[#f0f0f0]"
+            >
+                {/* ── Header ── */}
+                <div className="flex items-center gap-4 py-6 select-none">
+                    {/* Icon chip */}
+                    <div className="w-10 h-10 rounded-[10px] flex items-center justify-center text-xl flex-shrink-0 border border-[#d4a843]/30 bg-[#d4a843]/08 shadow-[0_4px_16px_rgba(212,168,67,0.12)]">
+                        ⚙️
+                    </div>
+                    <div>
+                        <p className="text-[1rem] font-semibold text-[#111] tracking-[-0.01em]">Technical Animation Pipeline</p>
+                        <p className="text-[0.75rem] text-[#999] mt-0.5">Lottie · After Effects · Adobe Suite · JSON animation</p>
                     </div>
                 </div>
-            </Accordion>
+
+                {/* ── Body ── */}
+                <div className="pb-8">
+                    <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+                        <ContentCard title="Clean Vector Topology (Illustrator)">
+                            All assets are meticulously hand-drawn using minimal anchor points. Strict avoidance of auto-tracing or redundant paths ensures an ultra-lightweight baseline for Bodymovin compilation.
+                        </ContentCard>
+                        <ContentCard title="Physics-Based Rigging (After Effects)">
+                            Bypassing linear keyframes to construct custom bezier curves (Value/Speed graphs). Complex reel animations are logically driven via Null objects to simulate realistic mechanical tension and weight.
+                        </ContentCard>
+                        <ContentCard title="Web-Native Optimization (Lottie)">
+                            Relying strictly on vector flat shading and linear gradients. No heavy raster effects (glows/drop shadows) are used. The final JSON exports remain under 500KB, guaranteeing a 1:1 visual match with zero lag.
+                        </ContentCard>
+                        <ContentCard title="Live Prototyping (React/Web)">
+                            Deploying interactive Lottie animations into real web environments. Integrating state-changes (hover, click to spin/open) to deliver fully functional MVPs ready for frontend implementation.
+                        </ContentCard>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                        {['ADOBE AFTER EFFECTS', 'ADOBE ILLUSTRATOR', 'LOTTIE / BODYMOVIN', 'JSON ANIMATION', 'UI/UX MOTION'].map(s => <SkillPill key={s}>{s}</SkillPill>)}
+                    </div>
+                </div>
+            </motion.article>
 
             {/* ── Footer ── */}
             <motion.footer
